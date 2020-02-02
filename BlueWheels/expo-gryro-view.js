@@ -7,7 +7,7 @@ import {
   Text,
   useStyleSheet,
 } from '@ui-kitten/components';
-import {View} from 'react-native';
+import {useKeepAwake} from 'expo-keep-awake';
 import {Gyroscope, Magnetometer} from 'expo-sensors';
 
 const RadioIcon = style => <Icon {...style} name="radio-outline" />;
@@ -30,7 +30,7 @@ export const GyroSteerView = () => {
       _unsubscribeM();
     };
   }, []);
-
+  useKeepAwake();
   const _subscribeG = () => {
     _subscriptionG = Gyroscope.addListener(gyroscopeData => {
       setDataG(gyroscopeData);
@@ -85,35 +85,36 @@ export const GyroSteerView = () => {
   let zz = dataM.z;
 
   return (
-    <View style={styles.sensor}>
-      <Text style={styles.text} category="h1">
-        Blue Wheels
+    <Layout level="3" style={styles.container}>
+      <Text style={styles.text} status="warning">
+        Beware, this app never sleeps
       </Text>
+
       <Text style={styles.text} appearance="hint">
-        This app will use your phone's bluetooth hardware and gryro sensors to
-        broadcast steering instructions to a vehicle
+        This app will use your phone's bluetooth and sensor hardware to measure
+        and broadcast steering actions
       </Text>
       <Button style={styles.actionButton} icon={RadioIcon}>
         CONNECT AND START DRIVING
       </Button>
-      <Layout>
+      <Layout style={styles.dataContainer}>
         <Text style={styles.text}>Gyroscope:</Text>
         <Text style={styles.text}>
           x: {round(x)} y: {round(y)} z: {round(z)}
         </Text>
       </Layout>
-      <Layout>
+      <Layout style={styles.dataContainer}>
         <Text style={styles.text}>Magnetometer:</Text>
         <Text style={styles.text}>
           x: {round(xx)} y: {round(yy)} z: {round(zz)}
         </Text>
       </Layout>
-      <View style={styles.buttonContainer}>
-        <Button onPress={_toggleG}>Toggle</Button>
+      <Layout style={styles.buttonContainer}>
+        <Button onPress={_toggleG}>Toggle Subscription</Button>
         <Button onPress={_slow}>Grandma</Button>
         <Button onPress={_fast}>F1</Button>
-      </View>
-    </View>
+      </Layout>
+    </Layout>
   );
 };
 
@@ -126,16 +127,24 @@ function round(n) {
 }
 
 const Stylesheet = StyleService.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    justifyContent: 'space-between',
+  },
   buttonContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'stretch',
     marginTop: 15,
+    padding: 8,
+    borderRadius: 8,
   },
-  sensor: {
-    marginTop: 45,
-    paddingHorizontal: 10,
+  dataContainer: {
+    padding: 10,
+    borderRadius: 8,
   },
+
   text: {
     textAlign: 'center',
   },

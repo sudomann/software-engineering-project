@@ -5,6 +5,7 @@ import {
   Layout,
   StyleService,
   useStyleSheet,
+  Text,
 } from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {mapping, dark as theme} from '@eva-design/eva';
@@ -16,7 +17,10 @@ const App = () => {
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={theme}>
-        <Layout style={styles.container}>
+        <Layout level="4" style={styles.container}>
+          <Text style={styles.text} category="h1">
+            Blue Wheels
+          </Text>
           <GyroSteerView />
         </Layout>
       </ApplicationProvider>
@@ -27,16 +31,13 @@ const App = () => {
 const StyleSheet = StyleService.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     textAlign: 'center',
     margin: 16,
-  },
-  actionButton: {
-    marginVertical: 16,
   },
 });
 
