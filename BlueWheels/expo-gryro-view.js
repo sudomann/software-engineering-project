@@ -8,50 +8,82 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import {View} from 'react-native';
-import {Gyroscope} from 'expo-sensors';
+import {Gyroscope, Magnetometer} from 'expo-sensors';
 
 const RadioIcon = style => <Icon {...style} name="radio-outline" />;
 
 export const GyroSteerView = () => {
-  const [data, setData] = useState({});
+  const [dataG, setDataG] = useState({});
+  const [dataM, setDataM] = useState({});
   const styles = useStyleSheet(Stylesheet);
-  let _subscription = undefined;
+  let _subscriptionG,
+    _subscriptionM = undefined;
 
   useEffect(() => {
-    _toggle();
+    _toggleG();
+    _toggleM();
   }, []);
 
   useEffect(() => {
     return () => {
-      _unsubscribe();
+      _unsubscribeG();
+      _unsubscribeM();
     };
   }, []);
 
-  const _subscribe = () => {
-    _subscription = Gyroscope.addListener(gyroscopeData => {
-      setData(gyroscopeData);
+  const _subscribeG = () => {
+    _subscriptionG = Gyroscope.addListener(gyroscopeData => {
+      setDataG(gyroscopeData);
     });
   };
 
-  const _unsubscribe = () => {
-    _subscription && _subscription.remove();
-    _subscription = null;
+  const _subscribeM = () => {
+    _subscriptionM = Magnetometer.addListener(magnetometerData => {
+      setDataM(magnetometerData);
+    });
   };
 
-  const _toggle = () => {
-    if (_subscription) _unsubscribe();
-    else _subscribe();
+  const _unsubscribeG = () => {
+    _subscriptionG && _subscriptionG.remove();
+    _subscriptionG = null;
+  };
+
+  const _unsubscribeM = () => {
+    _subscriptionM && _subscriptionM.remove();
+    _subscriptionM = null;
+  };
+
+  const _toggleG = () => {
+    if (_subscriptionG) {
+      _unsubscribeG();
+    } else {
+      _subscribeG();
+    }
+  };
+
+  const _toggleM = () => {
+    if (_subscriptionM) {
+      _unsubscribeM();
+    } else {
+      _subscribeM();
+    }
   };
 
   const _slow = () => {
     Gyroscope.setUpdateInterval(100);
+    Magnetometer.setUpdateInterval(100);
   };
 
   const _fast = () => {
     Gyroscope.setUpdateInterval(16);
+    Magnetometer.setUpdateInterval(16);
   };
 
-  let {x, y, z} = data;
+  let {x, y, z} = dataG;
+  let xx = dataM.x;
+  let yy = dataM.y;
+  let zz = dataM.z;
+
   return (
     <View style={styles.sensor}>
       <Text style={styles.text} category="h1">
@@ -64,12 +96,20 @@ export const GyroSteerView = () => {
       <Button style={styles.actionButton} icon={RadioIcon}>
         CONNECT AND START DRIVING
       </Button>
-      <Text style={styles.text}>Gyroscope:</Text>
-      <Text style={styles.text}>
-        x: {round(x)} y: {round(y)} z: {round(z)}
-      </Text>
+      <Layout>
+        <Text style={styles.text}>Gyroscope:</Text>
+        <Text style={styles.text}>
+          x: {round(x)} y: {round(y)} z: {round(z)}
+        </Text>
+      </Layout>
+      <Layout>
+        <Text style={styles.text}>Magnetometer:</Text>
+        <Text style={styles.text}>
+          x: {round(xx)} y: {round(yy)} z: {round(zz)}
+        </Text>
+      </Layout>
       <View style={styles.buttonContainer}>
-        <Button onPress={_toggle}>Toggle</Button>
+        <Button onPress={_toggleG}>Toggle</Button>
         <Button onPress={_slow}>Grandma</Button>
         <Button onPress={_fast}>F1</Button>
       </View>
@@ -82,7 +122,7 @@ function round(n) {
     return 0;
   }
 
-  return Math.floor(n * 100) / 100;
+  return Math.floor(n);
 }
 
 const Stylesheet = StyleService.create({
