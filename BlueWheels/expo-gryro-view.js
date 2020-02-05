@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import {
   Layout,
   Icon,
@@ -9,9 +9,18 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import {useKeepAwake} from 'expo-keep-awake';
-import {Gyroscope, Magnetometer, Accelerometer} from 'expo-sensors';
+import {Gyroscope, MagnetometerUncalibrated, Accelerometer} from 'expo-sensors';
 
 const RadioIcon = style => <Icon {...style} name="radio-outline" />;
+const M_PI = 3.14159265358979323846;
+
+const ArrowSteerLeft = () => (
+  <Button icon={() => <Icon {...style} name="arrow-left-outline" />} />
+);
+
+const ArrowSteerUp = () => <Button />;
+const ArrowSteerRight = () => <Button />;
+const ArrowSteerDown = () => <Button />;
 
 export const GyroSteerView = () => {
   const [dataG, setDataG] = useState({});
@@ -41,7 +50,7 @@ export const GyroSteerView = () => {
   };
 
   const _subscribeM = () => {
-    _subscriptionM = Magnetometer.addListener(magnetometerData => {
+    _subscriptionM = MagnetometerUncalibrated.addListener(magnetometerData => {
       setDataM(magnetometerData);
     });
   };
@@ -93,15 +102,39 @@ export const GyroSteerView = () => {
 
   const _slow = () => {
     Gyroscope.setUpdateInterval(100);
-    Magnetometer.setUpdateInterval(100);
+    MagnetometerUncalibrated.setUpdateInterval(100);
     Accelerometer.setUpdateInterval(100);
   };
 
   const _fast = () => {
     Gyroscope.setUpdateInterval(16);
-    Magnetometer.setUpdateInterval(16);
+    MagnetometerUncalibrated.setUpdateInterval(16);
     Accelerometer.setUpdateInterval(16);
   };
+
+  const accelerationX = dataA.x;
+  const accelerationY = dataA.y;
+  const accelerationZ = dataA.z;
+
+  const pitch =
+    (180 *
+      Math.atan(
+        accelerationX /
+          Math.sqrt(
+            accelerationY * accelerationY + accelerationZ * accelerationZ,
+          ),
+      )) /
+    M_PI;
+
+  const roll =
+    (180 *
+      Math.atan(
+        accelerationY /
+          Math.sqrt(
+            accelerationX * accelerationX + accelerationZ * accelerationZ,
+          ),
+      )) /
+    M_PI;
 
   return (
     <Layout level="3" style={styles.container}>
@@ -117,14 +150,13 @@ export const GyroSteerView = () => {
         <Button style={styles.actionButton} icon={RadioIcon}>
           CONNECT AND START DRIVING
         </Button>
-        <Layout style={styles.dataContainer}>
+        {/* <Layout style={styles.dataContainer}>
           <Text category="h4" style={styles.text}>
             Gyroscope:
           </Text>
-          <Text style={styles.text}>x: {dataG.x}</Text>
-          <Text style={styles.text}>y: {dataG.y}</Text>
-          <Text style={styles.text}>z: {dataG.z}</Text>
-          <Text style={styles.text}></Text>
+          <Text style={styles.text}>x: {round(dataG.x)}</Text>
+          <Text style={styles.text}>y: {round(dataG.y)}</Text>
+          <Text style={styles.text}>z: {round(dataG.z)}</Text>
         </Layout>
         <Layout style={styles.dataContainer}>
           <Text category="h4" style={styles.text}>
@@ -142,11 +174,25 @@ export const GyroSteerView = () => {
           <Text style={styles.text}>x: {dataA.x}</Text>
           <Text style={styles.text}>y: {dataA.y}</Text>
           <Text style={styles.text}>z: {dataA.z}</Text>
+        </Layout> */}
+        <Layout style={styles.dataContainer}>
+          <Text category="h4" style={styles.text}>
+            Steering:
+          </Text>
+          <Text style={styles.text}>
+            roll (clockwise/anti-clockwise): {roll}}
+          </Text>
+          <Text style={styles.text}>
+            pitch (tilt forward/backward or up/down): {pitch}
+          </Text>
         </Layout>
-        <Layout style={styles.buttonContainer}>
+        <Layout>
           <Button onPress={_toggleG}>Toggle Subscription</Button>
           <Button onPress={_slow}>Grandma</Button>
           <Button onPress={_fast}>F1</Button>
+        </Layout>
+        <Layout level="2">
+          <ArrowSteerLeft />
         </Layout>
       </ScrollView>
     </Layout>
@@ -158,7 +204,7 @@ function round(n) {
     return 0;
   }
 
-  return Math.floor(n);
+  return Math.floor(n * 100) / 100;
 }
 
 const Stylesheet = StyleService.create({
@@ -169,14 +215,6 @@ const Stylesheet = StyleService.create({
   },
   scrollView: {
     flex: 1,
-  },
-  buttonContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    marginTop: 15,
-    //padding: 8,
-    borderRadius: 8,
   },
   dataContainer: {
     margin: 8,
