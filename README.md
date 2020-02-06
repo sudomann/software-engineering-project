@@ -36,27 +36,16 @@ _Notice_: This has only been tested on Android so far
 
 ### Hardware
 
-```
-Hardware steup info
-```
+Consult README in `Vehicle/` folder.
 
 ### Software
 
-1. Install all necessary components
+Consult README in `App/` folder.
 
-```bash
-cd App
-yarn
-```
+### Try It Out
 
-2. Then connect your device to your computer via USB. Permit access via any device prompts that may come up. On android make sure usb debugging is enabled.
+_After_ you've commpleted all hardware and app setup.
 
-3) Build and install the app to your device.
+## Steering Guide
 
-For an android device, run `yarn android --variant=release`
-
-For ios, `yarn ios --variant=release`
-
-## Try It Out
-
-### Steering
+...
