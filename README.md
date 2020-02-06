@@ -42,10 +42,10 @@ Consult README in `Vehicle/` folder.
 
 Consult README in `App/` folder.
 
-### Try It Out
+## Try It Out
 
 _After_ you've commpleted all hardware and app setup.
 
-## Steering Guide
+### Steering Guide
 
 ...
