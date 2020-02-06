@@ -1,11 +1,4 @@
-# COSC 325 Project by:
-
-- Linus Drissel
-- Casey Hardell
-- Matthew Mckenzie
-- Willy Njundong
-
-## Overview
+# COSC 325 Project
 
 This repository is composed of a react native app, which will be used to steer a toy vehicle via bluetooth. The vehicle's traction will be managed by an arduino.
 
@@ -49,3 +42,10 @@ _After_ you've commpleted all hardware and app setup.
 ### Steering Guide
 
 ...
+
+#### Authors
+
+- Linus Drissel
+- Casey Hardell
+- Matthew Mckenzie
+- Willy Njundong
