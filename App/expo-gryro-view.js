@@ -15,12 +15,30 @@ const RadioIcon = style => <Icon {...style} name="radio-outline" />;
 const M_PI = 3.14159265358979323846;
 
 const ArrowSteerLeft = () => (
-  <Button icon={() => <Icon {...style} name="arrow-left-outline" />} />
+  <Button
+    appearance="outline"
+    icon={style => <Icon {...style} name="arrow-left-outline" />}
+  />
 );
 
-const ArrowSteerUp = () => <Button />;
-const ArrowSteerRight = () => <Button />;
-const ArrowSteerDown = () => <Button />;
+const ArrowSteerUp = () => (
+  <Button
+    appearance="outline"
+    icon={style => <Icon {...style} name="arrow-up-outline" />}
+  />
+);
+const ArrowSteerRight = () => (
+  <Button
+    appearance="outline"
+    icon={style => <Icon {...style} name="arrow-right-outline" />}
+  />
+);
+const ArrowSteerDown = () => (
+  <Button
+    appearance="outline"
+    icon={style => <Icon {...style} name="arrow-down-outline" />}
+  />
+);
 
 export const GyroSteerView = () => {
   const [dataG, setDataG] = useState({});
@@ -174,7 +192,7 @@ export const GyroSteerView = () => {
           <Text style={styles.text}>x: {dataA.x}</Text>
           <Text style={styles.text}>y: {dataA.y}</Text>
           <Text style={styles.text}>z: {dataA.z}</Text>
-        </Layout> */}
+        </Layout>
         <Layout style={styles.dataContainer}>
           <Text category="h4" style={styles.text}>
             Steering:
@@ -191,8 +209,18 @@ export const GyroSteerView = () => {
           <Button onPress={_slow}>Grandma</Button>
           <Button onPress={_fast}>F1</Button>
         </Layout>
-        <Layout level="2">
-          <ArrowSteerLeft />
+         */}
+        <Layout level="2" style={styles.testButtonContainer}>
+          <View>
+            <ArrowSteerLeft />
+          </View>
+          <View>
+            <ArrowSteerUp />
+            <ArrowSteerDown />
+          </View>
+          <View>
+            <ArrowSteerRight />
+          </View>
         </Layout>
       </ScrollView>
     </Layout>
@@ -221,7 +249,11 @@ const Stylesheet = StyleService.create({
     padding: 10,
     borderRadius: 8,
   },
-
+  testButtonContainer: {
+    //flex: 1,
+    //alignItems: 'baseline',
+    flexDirection: 'row',
+  },
   text: {
     textAlign: 'center',
   },
