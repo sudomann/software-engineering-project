@@ -12,3 +12,13 @@ yarn
 
 - android: `yarn android --variant=release`
 - ios: `yarn ios --variant=release`
+
+Notes:
+
+Steering clockwise/counterclockwise:
+
+- Use gyro (rads/s) z value
+
+Traction
+
+- Magnetometer (uT) z value. 0 means phone is flat (screen/back facing down to earth).
