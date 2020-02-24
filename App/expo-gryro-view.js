@@ -9,7 +9,7 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import {useKeepAwake} from 'expo-keep-awake';
-import {Gyroscope, MagnetometerUncalibrated, Accelerometer} from 'expo-sensors';
+import {Gyroscope, Magnetometer, Accelerometer} from 'expo-sensors';
 
 const RadioIcon = style => <Icon {...style} name="radio-outline" />;
 const M_PI = 3.14159265358979323846;
@@ -68,7 +68,7 @@ export const GyroSteerView = () => {
   };
 
   const _subscribeM = () => {
-    _subscriptionM = MagnetometerUncalibrated.addListener(magnetometerData => {
+    _subscriptionM = Magnetometer.addListener(magnetometerData => {
       setDataM(magnetometerData);
     });
   };
@@ -120,13 +120,13 @@ export const GyroSteerView = () => {
 
   const _slow = () => {
     Gyroscope.setUpdateInterval(100);
-    MagnetometerUncalibrated.setUpdateInterval(100);
+    Magnetometer.setUpdateInterval(100);
     Accelerometer.setUpdateInterval(100);
   };
 
   const _fast = () => {
     Gyroscope.setUpdateInterval(16);
-    MagnetometerUncalibrated.setUpdateInterval(16);
+    Magnetometer.setUpdateInterval(16);
     Accelerometer.setUpdateInterval(16);
   };
 
@@ -168,7 +168,7 @@ export const GyroSteerView = () => {
         <Button style={styles.actionButton} icon={RadioIcon}>
           CONNECT AND START DRIVING
         </Button>
-        {/* <Layout style={styles.dataContainer}>
+        <Layout style={styles.dataContainer}>
           <Text category="h4" style={styles.text}>
             Gyroscope:
           </Text>
@@ -180,18 +180,18 @@ export const GyroSteerView = () => {
           <Text category="h4" style={styles.text}>
             Magnetometer:
           </Text>
-          <Text style={styles.text}>x: {dataM.x}</Text>
-          <Text style={styles.text}>y: {dataM.y}</Text>
-          <Text style={styles.text}>z: {dataM.z}</Text>
+          <Text style={styles.text}>x: {round(dataM.x)}</Text>
+          <Text style={styles.text}>y: {round(dataM.y)}</Text>
+          <Text style={styles.text}>z: {round(dataM.z)}</Text>
         </Layout>
 
         <Layout style={styles.dataContainer}>
           <Text category="h4" style={styles.text}>
             Accelerometer:
           </Text>
-          <Text style={styles.text}>x: {dataA.x}</Text>
-          <Text style={styles.text}>y: {dataA.y}</Text>
-          <Text style={styles.text}>z: {dataA.z}</Text>
+          <Text style={styles.text}>x: {round(dataA.x)}</Text>
+          <Text style={styles.text}>y: {round(dataA.y)}</Text>
+          <Text style={styles.text}>z: {round(dataA.z)}</Text>
         </Layout>
         <Layout style={styles.dataContainer}>
           <Text category="h4" style={styles.text}>
@@ -209,7 +209,6 @@ export const GyroSteerView = () => {
           <Button onPress={_slow}>Grandma</Button>
           <Button onPress={_fast}>F1</Button>
         </Layout>
-         */}
         <Layout level="2" style={styles.testButtonContainer}>
           <View>
             <ArrowSteerLeft />
