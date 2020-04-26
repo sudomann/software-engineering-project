@@ -1,25 +1,29 @@
 import React from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
-import {Layout, Text, Button} from '@ui-kitten/components';
+import {Layout, Text, Input, Button, Card} from '@ui-kitten/components';
 
-export const IntroScreen = ({navigation}) => {
+const Header = () => (
+  <View style={styles.card}>
+    <Text category="h1">Blue Wheels</Text>
+    <Text category="s1">Steer a toy vehicle using your phone</Text>
+  </View>
+);
+
+export const IntroScreen = ({navigation: {navigate}}) => {
   return (
-    <Layout level="4" style={styles.container}>
+    <Layout style={styles.container} level="4">
+      <Card style={styles.card} header={Header}>
+        <Text>Project by ...</Text>
+      </Card>
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.scrollContainer}>
-        <Text category="h1">Blue Wheels</Text>
-        <Text>Project by</Text>
-        <Text>Casey, Linus, Matthew, Will</Text>
-        <Text>
-          You can connect to a compatible vehicle's control system via bluetooth
-          and steer using a capable phone.
-        </Text>
-      </ScrollView>
-      <Button
-        style={styles.button}
-        onPress={() => navigation.navigate('setup')}>
-        GET STARTED
+        contentContainerStyle={styles.scrollContainer}
+      />
+      <Text style={{margin: 16, textAlign: 'center'}} category="s1">
+        You will need bluetooth turned on to use this app. Let's get started
+      </Text>
+      <Button style={styles.button} onPress={() => navigate('steer')}>
+        CONNECT AND DRIVE
       </Button>
     </Layout>
   );
@@ -30,13 +34,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scroll: {
-    margin: 32,
+    //margin: 32,
   },
   scrollContainer: {
+    flex: 1,
+    padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
   button: {
     margin: 16,
+  },
+  card: {
+    flex: 1,
+    margin: 8,
   },
 });
