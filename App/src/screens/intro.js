@@ -5,7 +5,9 @@ import {Layout, Text, Input, Button, Card} from '@ui-kitten/components';
 const Header = () => (
   <View style={styles.card}>
     <Text category="h1">Blue Wheels</Text>
-    <Text category="s1">Steer a toy vehicle using your phone</Text>
+    <Text category="s1">
+      Controller for steering a bluetooth-enabled vehicle through an Arduino
+    </Text>
   </View>
 );
 
@@ -13,7 +15,21 @@ export const IntroScreen = ({navigation: {navigate}}) => {
   return (
     <Layout style={styles.container} level="4">
       <Card style={styles.card} header={Header}>
-        <Text>Project by ...</Text>
+        <Text category="p1">Development Team</Text>
+        <View style={styles.devs}>
+          <Text style={styles.devItem} category="c1">
+            Casey J Hardell
+          </Text>
+          <Text style={styles.devItem} category="c1">
+            Linus E Drissel
+          </Text>
+          <Text style={styles.devItem} category="c1">
+            Matthew D Mckenzie
+          </Text>
+          <Text style={styles.devItem} category="c1">
+            Willy F Njundong
+          </Text>
+        </View>
       </Card>
       <ScrollView
         style={styles.scroll}
@@ -46,7 +62,14 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   card: {
-    flex: 1,
     margin: 8,
+    justifyContent: 'center',
+  },
+  devs: {},
+  devItem: {
+    borderRadius: 8,
+    marginVertical: 8,
+    padding: 8,
+    backgroundColor: 'gray',
   },
 });

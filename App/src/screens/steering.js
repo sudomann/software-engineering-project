@@ -153,13 +153,13 @@ export const SteeringScreen = ({navigation: {goBack}}) => {
 
   return (
     <Layout style={styles.container}>
-      {!isReady ? (
+      {isReady ? (
         renderLoading()
       ) : (
         <View>
-          <Text style={{textAlign: 'center'}}>
-            If you hit this screen, it means you are connected to device id:{' '}
-            {VEHICLE_MAC}
+          <Text style={{textAlign: 'center', margin: 16}}>
+            {`You are connected to device ID:
+            ${VEHICLE_MAC}`}
           </Text>
           <Layout level="2" style={styles.buttonContainer}>
             <View>
