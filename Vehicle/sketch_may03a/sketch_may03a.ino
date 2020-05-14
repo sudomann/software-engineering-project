@@ -1,5 +1,4 @@
 /*
-
 */
 
 #include <ArduinoBLE.h>
@@ -14,6 +13,14 @@ BLEByteCharacteristic controlCharacteristic("19B10001-E8F2-537E-4F6C-D104768A121
 void setup() {
   Serial.begin(9600);
   while (!Serial);
+
+  // set all the motor control pins to outputs
+  pinMode(enA, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
 
   // begin initialization
   if (!BLE.begin()) {
@@ -51,7 +58,38 @@ void setup() {
 void loop() {
   // poll for BLE events
   BLE.poll();
-}
+  if(value() == 49){
+    analogWrite(enA,200);
+    analogWrite(enB,200);
+    digitalWrite(in2,HIGH);
+    digitalWrite(in1,LOW);
+    digitalWrite(in3,LOW);
+    digitalWrite(in4,HIGH);
+  }
+  if(value() == 50){
+    analogWrite(enA,200);
+    analogWrite(enB,200);
+    digitalWrite(in2,LOW);
+    digitalWrite(in1,HIGH);
+    digitalWrite(in3,HIGH);
+    digitalWrite(in4,LOW);
+  }
+  if(value() == 48){
+    analogWrite(enA,LOW);
+    analogWrite(enB,LOW);
+  }
+  if(value() == 51)
+    analogWrite(enA,LOW);
+    analogWrite(enB,HIGH);
+    digitalWrite(in3,LOW);
+    digitalWrite(in4,HIGH);
+  }
+  if(value() == 52){
+    analogWrite(enA,HIGH);
+    analogWrite(enB,LOW);
+    digitalWrite(in2,HIGH);
+    digitalWrite(in1,LOW);
+  }
 
 void blePeripheralConnectHandler(BLEDevice central) {
   // central connected event handler
@@ -66,7 +104,6 @@ void blePeripheralDisconnectHandler(BLEDevice central) {
 }
 
 void controlCharacteristicWritten(BLEDevice central, BLECharacteristic characteristic) {
-  // central wrote new value to characteristic, update LED
   Serial.print("Characteristic event, written:");
   // while the central is still connected to peripheral:
     byte value = 0;
